@@ -1,15 +1,14 @@
+"use strict";
 require("dotenv").config();
 const path = require("path");
 const cors = require("cors");
 const http = require("http");
 const morgan = require("morgan");
 const express = require("express");
-const bodyParser = require("body-parser");
 
-const seed = require("./data/seed");
-const HttpError = require("./models/httpError");
+const { sequelize } = require("./database/models");
+const HttpError = require("./utils/httpError");
 const catchAsync = require("./utils/catchAsync");
-const { sequelize } = require("./config/db_config");
 const errorHandler = require("./controllers/errorController");
 
 const app = express();
@@ -18,7 +17,7 @@ const server = http.createServer(app);
 
 app.use(cors());
 
-app.use(bodyParser.json());
+app.use(express.json());
 
 app.use(express.urlencoded({ extended: true }));
 
@@ -29,6 +28,7 @@ app.use(morgan("dev"));
 app.use("/public/uploads", express.static(path.join("public", "uploads")));
 
 // Routes
+app.use("/api", require("./routes"));
 
 // Invalid routes
 app.use(
@@ -44,8 +44,6 @@ app.use(errorHandler);
 const startServer = async (server) => {
     try {
         await sequelize.authenticate();
-        await sequelize.sync();
-        await seed();
         server.listen(port, () => {
             console.log(`Listening to the server on http://localhost:${port}`);
         });

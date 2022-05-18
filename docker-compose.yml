@@ -3,7 +3,7 @@ version: "3.7"
 services:
   db:
     image: postgres
-    restart: always
+    # restart: always
     volumes:
       - ./data/db:/var/lib/postgresql/data
     environment:
@@ -14,7 +14,7 @@ services:
 
   adminer:
     image: adminer
-    restart: always
+    # restart: always
     ports:
       - 8080:8080
 
