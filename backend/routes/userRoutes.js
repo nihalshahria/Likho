@@ -3,6 +3,7 @@ const { check } = require("express-validator");
 const userController = require("../controllers/userController");
 const { checkAuth } = require("../utils/tokenService");
 
+/** User Routes */
 const router = Router();
 
 // router.use(checkAuth);
@@ -21,11 +22,26 @@ router
         ],
         userController.createUser
     )
-    .put(checkAuth, userController.updateUser)
+    .put(
+        checkAuth,
+        [
+            check(
+                "newPassword",
+                "Password must be at least 6 characters long and different from the old one"
+            ).custom((val, { req }) => {
+                if (
+                    !req.body.oldPassword ||
+                    (val !== req.body.oldPassword && val.length >= 6)
+                )
+                    return true;
+                throw new Error();
+            }),
+        ],
+        userController.updateUser
+    );
 
 router.route("/:uuid").get(userController.getUser);
 
 router.post("/login", userController.logInUser);
-
 
 module.exports = router;

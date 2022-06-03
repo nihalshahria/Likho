@@ -1,5 +1,6 @@
 const jwt = require("jsonwebtoken");
 const catchAsync = require("./catchAsync");
+const HttpError = require("./httpError");
 
 exports.generateToken = async (user) => {
     return await jwt.sign(

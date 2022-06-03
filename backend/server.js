@@ -10,6 +10,7 @@ const { sequelize } = require("./database/models");
 const HttpError = require("./utils/httpError");
 const catchAsync = require("./utils/catchAsync");
 const errorHandler = require("./controllers/errorController");
+const routes = require("./routes")
 
 const app = express();
 const port = process.env.PORT || 5000;
@@ -27,8 +28,8 @@ app.use(morgan("dev"));
 // Static route
 app.use("/public/uploads", express.static(path.join("public", "uploads")));
 
-// Routes
-app.use("/api", require("./routes"));
+
+app.use("/api", routes);
 
 // Invalid routes
 app.use(
