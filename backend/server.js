@@ -5,6 +5,7 @@ const cors = require("cors");
 const http = require("http");
 const morgan = require("morgan");
 const express = require("express");
+const multer = require("multer")
 
 const { sequelize } = require("./database/models");
 const HttpError = require("./utils/httpError");
@@ -25,9 +26,11 @@ app.use(express.urlencoded({ extended: true }));
 // Logger middleware
 app.use(morgan("dev"));
 
+// Process Form-Data
+app.use(multer().array());
+
 // Static route
 app.use("/public/uploads", express.static(path.join("public", "uploads")));
-
 
 app.use("/api", routes);
 

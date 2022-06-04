@@ -1,10 +1,20 @@
 const { Router } = require("express");
-const { check } = require("express-validator");
-const newsController = require("../controllers/newsController");
+const { checkAuth } = require("../utils/tokenService");
+const { publishNews, updateNews } = require("../controllers/newsController");
+const { newsPublishValidators, newsUpdateValidators } = require("../utils/newsValidators");
 
 /** News Routes */
 const router = Router();
 
-router.route("/").post(newsController.publishNews);
+// router.get("/", getNews);
+// router.get("/:uuid", getNewsById);
+
+router.use(checkAuth);
+
+router
+    .route("/")
+    .post(newsPublishValidators, publishNews)
+    .put(newsUpdateValidators, updateNews);
+    // .get("/:uuid", getNews);
 
 module.exports = router;

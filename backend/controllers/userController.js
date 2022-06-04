@@ -1,11 +1,10 @@
 "use strict";
-const _ = require("lodash");
 const bcrypt = require("bcryptjs");
-const { validationResult } = require("express-validator");
+const { Op } = require("sequelize");
+const { User } = require("../database/models");
 const HttpError = require("../utils/httpError");
 const catchAsync = require("../utils/catchAsync");
-const { User } = require("../database/models");
-const { Op } = require("sequelize");
+const { validationResult } = require("express-validator");
 const { checker } = require("../utils/validationChecker");
 const { generateToken } = require("../utils/tokenService");
 const { getPagination, getPagingData } = require("../utils/pagination")
@@ -22,13 +21,11 @@ exports.createUser = catchAsync(async (req, res, next) => {
         password: hashedPassword,
     });
 
-    const token = await generateToken(user);
-
     res.status(201).json({
         status: "success",
         data: {
             user,
-            token,
+            token: await generateToken(user)
         },
     });
 });
@@ -57,25 +54,23 @@ exports.logInUser = catchAsync(async (req, res, next) => {
     });
 });
 
+// TODO: OrderBy has not been implemented
 exports.getUsers = catchAsync(async (req, res, next) => {
-    let { search, role, orderBy, page, size } = req.query;
+    let { search, role, page, size } = req.query;
     search = search || "";
     role = role || "";
-    orderBy = orderBy || "";
 
-    const { limit, offset} = getPagination(page, size);
-
-    const criteria = {
-        name: { [Op.iLike]: `%${search}%` },
-        role: { [Op.iLike]: `%${role}%` },
-    };
+    const { limit, offset } = getPagination(page, size);
 
     const data = await User.findAndCountAll({
-        where: criteria,
-        order: orderBy,
+        where: {
+            name: { [Op.iLike]: `%${search}%` },
+            role: { [Op.iLike]: `%${role}%` },
+        },
         limit,
-        offset
+        offset,
     });
+
     const { items: users, ...others } = getPagingData(data, page, limit);
 
     res.status(200).json({
@@ -90,22 +85,18 @@ exports.getUsers = catchAsync(async (req, res, next) => {
 exports.getUser = catchAsync(async (req, res, next) => {
     const uuid = req.params.uuid;
 
-    const criteria = { uuid: uuid };
-    
     const user = await User.findOne({
-        where: criteria,
+        where: { uuid: uuid },
     });
     
     res.status(200).json({
         status: "success",
-        data: {
-            user : user,
-        },
+        data: user,
     });
 });
 
 exports.updateUser = catchAsync(async (req, res, next) => {
-    checker(validationResult(req));
+        
 
     const { id } = req.userData;
 
