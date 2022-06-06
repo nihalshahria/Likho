@@ -1,7 +1,7 @@
 const { Router } = require("express");
-const { checkAuth } = require("../utils/tokenService");
-const { userCreationValidators, userUpdateValidators } = require("../utils/userValidators");
 const { updateUser, createUser, getUsers, getUser, logInUser } = require("../controllers/userController");
+const { checkAuth } = require("../middleware/checkAuth");
+const { userCreationValidators, userUpdateValidators } = require("../middleware/userValidators");
 
 /** User Routes */
 const router = Router();

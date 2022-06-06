@@ -1,7 +1,7 @@
 const { Router } = require("express");
-const { checkAuth } = require("../utils/tokenService");
 const { publishNews, updateNews, deleteNews, getAllNews, getNews } = require("../controllers/newsController");
-const { newsPublishValidators, newsUpdateValidators } = require("../utils/newsValidators");
+const { checkAuth } = require("../middleware/checkAuth");
+const { newsPublishValidators, newsUpdateValidators } = require("../middleware/newsValidators");
 
 /** News Routes */
 const router = Router();
