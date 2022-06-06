@@ -1,7 +1,50 @@
 const { validationResult } = require("express-validator");
+const { Op } = require("sequelize");
 const { News } = require("../database/models");
 const catchAsync = require("../utils/catchAsync");
+const HttpError = require("../utils/httpError");
+const { getPagination, getPagingData } = require("../utils/pagination");
 const { checker } = require("../utils/validationChecker");
+
+exports.getAllNews = catchAsync(async (req, res, next) => {
+    checker(validationResult(req));
+    let { search, page, size } = req.query;
+    search = search || "";
+    const { limit, offset } = getPagination(page, size);
+    const data = await News.findAndCountAll({
+        where: {
+            [Op.or]: [
+                { title: { [Op.iLike]: `%${search}%` } },
+                { body: { [Op.iLike]: `%${search}%` } },
+            ],
+        },
+        limit,
+        offset,
+    });
+
+    const { items: news, ...others } = getPagingData(data, page, limit);
+
+    res.status(200).json({
+        status: "success",
+        data: {
+            ...others,
+            news,
+        },
+    });
+});
+
+exports.getNews = catchAsync(async (req, res, next) => {
+    const uuid = req.params.uuid;
+
+    const news = await News.findOne({
+        where: { uuid: uuid },
+    });
+
+    res.status(200).json({
+        status: "success",
+        data: news,
+    });
+});
 
 exports.publishNews = catchAsync(async (req, res, next) => {
     checker(validationResult(req));
@@ -51,5 +94,25 @@ exports.updateNews = catchAsync(async (req, res, next) => {
         });
     } else {
         throw new HttpError("You are not authorized to update this news", 401);
+    }
+});
+
+exports.deleteNews = catchAsync(async (req, res, next) => {
+    const user = req.userData;
+    const uuid = req.params.uuid;
+
+    const news = await News.findOne({ where: { uuid: uuid } });
+
+    if (!news) throw new HttpError("News not found", 404);
+
+    if (user.role === "Admin" || user.id === news.creatorId) {
+        const result = await news.destroy({ where: { uuid: uuid } });
+
+        res.status(200).json({
+            status: "success",
+            message: "News deleted",
+        });
+    } else {
+        throw new HttpError("You are not authorized to delete this news", 401);
     }
 });
