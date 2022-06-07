@@ -7,7 +7,7 @@ const catchAsync = require("../utils/catchAsync");
 const { validationResult } = require("express-validator");
 const { checker } = require("../utils/validationChecker");
 const { generateToken } = require("../utils/tokenService");
-const { getPagination, getPagingData } = require("../utils/pagination")
+const { getPagination, getPagingData } = require("../utils/pagination");
 
 exports.createUser = catchAsync(async (req, res, next) => {
     checker(validationResult(req));
@@ -25,7 +25,7 @@ exports.createUser = catchAsync(async (req, res, next) => {
         status: "success",
         data: {
             user,
-            token: await generateToken(user)
+            token: await generateToken(user),
         },
     });
 });
@@ -72,13 +72,12 @@ exports.getUsers = catchAsync(async (req, res, next) => {
     });
 
     const { items: users, ...others } = getPagingData(data, page, limit);
-
     res.status(200).json({
         status: "success",
         data: {
             ...others,
-            users
-        }
+            users,
+        },
     });
 });
 
@@ -88,7 +87,7 @@ exports.getUser = catchAsync(async (req, res, next) => {
     const user = await User.findOne({
         where: { uuid: uuid },
     });
-    
+
     res.status(200).json({
         status: "success",
         data: user,
@@ -96,27 +95,31 @@ exports.getUser = catchAsync(async (req, res, next) => {
 });
 
 exports.updateUser = catchAsync(async (req, res, next) => {
-        
-
     const { id } = req.userData;
 
     const { name, oldPassword, newPassword } = req.body;
 
     const user = await User.findByPk(id);
-    
+
     if (newPassword) {
-        const isValidPassword = await bcrypt.compare(oldPassword, user.password);
-        
+        const isValidPassword = await bcrypt.compare(
+            oldPassword,
+            user.password
+        );
+
         if (!isValidPassword)
-            throw new HttpError("Invalid credentials, could not update user.", 401);
-        
+            throw new HttpError(
+                "Invalid credentials, could not update user.",
+                401
+            );
+
         user.password = await bcrypt.hash(newPassword, 12);
     }
-        
+
     const changes = {
         name: name || undefined,
         password: user.password,
-    }
+    };
 
     const result = await User.update(changes, { where: { id } });
 
