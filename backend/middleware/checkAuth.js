@@ -1,3 +1,6 @@
+const jwt = require("jsonwebtoken");
+const HttpError = require("../utils/httpError");
+
 exports.checkAuth = (req, res, next) => {
     if (req.method === "OPTIONS") {
         next();
@@ -13,6 +16,7 @@ exports.checkAuth = (req, res, next) => {
         };
         next();
     } catch (error) {
+        console.log(error);
         return next(new HttpError("Authentication failed", 401));
     }
 };

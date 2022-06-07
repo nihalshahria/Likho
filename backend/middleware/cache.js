@@ -3,13 +3,13 @@ const mcache = require("memory-cache");
 exports.cache = (duration) => {
     return (req, res, next) => {
         const key = "_express_" + req.originalUrl || req.url;
-        console.log(key);
+        // console.log(key);
         const cachedBody = mcache.get(key);
         if (cachedBody) {
             res.json(cachedBody);
             return;
         } else {
-            console.log("cache miss");
+            // console.log("cache miss");
             res.sendResponse = res.json;
             res.json = (body) => {
                 if (body.status !== "error") {

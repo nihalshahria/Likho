@@ -1,6 +1,6 @@
 const { validationResult } = require("express-validator");
-const { Op } = require("sequelize");
-const { News } = require("../database/models");
+const { Op, where } = require("sequelize");
+const { News, User } = require("../database/models");
 const catchAsync = require("../utils/catchAsync");
 const HttpError = require("../utils/httpError");
 const { getPagination, getPagingData } = require("../utils/pagination");
@@ -8,15 +8,25 @@ const { checker } = require("../utils/validationChecker");
 
 exports.getAllNews = catchAsync(async (req, res, next) => {
     checker(validationResult(req));
-    let { search, page, size } = req.query;
+
+    let { search, page, size, userId } = req.query;
     search = search || "";
+
     const { limit, offset } = getPagination(page, size);
     const data = await News.findAndCountAll({
         where: {
-            [Op.or]: [
-                { title: { [Op.iLike]: `%${search}%` } },
-                { body: { [Op.iLike]: `%${search}%` } },
+            [Op.and]: [
+                {
+                    [Op.or]: [
+                        { title: { [Op.iLike]: `%${search}%` } },
+                        { body: { [Op.iLike]: `%${search}%` } },
+                    ],
+                },
             ],
+        },
+        include: {
+            association: "user",
+            where: { uuid: userId}
         },
         limit,
         offset,
@@ -38,6 +48,7 @@ exports.getNews = catchAsync(async (req, res, next) => {
 
     const news = await News.findOne({
         where: { uuid: uuid },
+        include: {association: "user",},
     });
 
     res.status(200).json({
@@ -51,7 +62,7 @@ exports.publishNews = catchAsync(async (req, res, next) => {
 
     const { title, body, image, category } = req.body;
     const user = req.userData;
-
+    console.log(user);
     if (user.role === "General")
         throw new HttpError("You are not authorized to publish news", 401);
 

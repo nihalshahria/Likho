@@ -2,10 +2,10 @@
     "name": "backend",
     "version": "1.0.0",
     "description": "",
-    "main": "index.js",
+    "main": "server.js",
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1",
-        "prestart": "sequelize-cli db:create || sequelize-cli db:migrate || sequelize-cli db:seed:all",
+        "create-db": "sequelize-cli db:create && sequelize-cli db:migrate && sequelize-cli db:seed:all",
         "drop-db": "sequelize-cli db:drop",
         "start": "nodemon server"
     },

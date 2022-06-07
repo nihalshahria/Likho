@@ -28,12 +28,7 @@ module.exports = (sequelize, DataTypes) => {
             },
             name: {
                 type: DataTypes.STRING,
-                allowNull: false,
-                validate: {
-                    isAlpha: {
-                        msg: "Name can only contain letters",
-                    },
-                },
+                allowNull: false
             },
             email: {
                 type: DataTypes.STRING,
@@ -56,7 +51,7 @@ module.exports = (sequelize, DataTypes) => {
                 },
             },
             password: {
-                type: DataTypes.STRING,
+                type: DataTypes.TEXT,
                 allowNull: false,
             },
             image: {

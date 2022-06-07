@@ -88,6 +88,8 @@ exports.getUser = catchAsync(async (req, res, next) => {
         where: { uuid: uuid },
     });
 
+    if(!user) throw new HttpError("User not found", 404);
+
     res.status(200).json({
         status: "success",
         data: user,
