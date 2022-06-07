@@ -1,0 +1,363 @@
+{
+	"info": {
+		"_postman_id": "b01b0f9b-910c-40d2-81ef-217f08d7d41a",
+		"name": "NewsBlogCRUD",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "19265164"
+	},
+	"item": [
+		{
+			"name": "User",
+			"item": [
+				{
+					"name": "Create User",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "name",
+									"value": "{{$randomFullName}}",
+									"type": "text"
+								},
+								{
+									"key": "email",
+									"value": "{{$randomEmail}}",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "123456",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{api}}/users/",
+							"host": [
+								"{{api}}"
+							],
+							"path": [
+								"users",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Login",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "email",
+									"value": "Leann75@gmail.com",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "123456",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{api}}/users/login",
+							"host": [
+								"{{api}}"
+							],
+							"path": [
+								"users",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Users",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{api}}/users/",
+							"host": [
+								"{{api}}"
+							],
+							"path": [
+								"users",
+								""
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "1",
+									"disabled": true
+								},
+								{
+									"key": "size",
+									"value": "5",
+									"disabled": true
+								},
+								{
+									"key": "search",
+									"value": "{{$randomNameSuffix}}",
+									"disabled": true
+								},
+								{
+									"key": "role",
+									"value": "editor",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get User by ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{api}}/users/e79d11a3-991a-4ef7-8317-d76bad18bf29",
+							"host": [
+								"{{api}}"
+							],
+							"path": [
+								"users",
+								"e79d11a3-991a-4ef7-8317-d76bad18bf29"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update User",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"nihal\",\n    \"oldPassword\": \"123456\",\n    \"newPassword\": \"123457\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{api}}/users/",
+							"host": [
+								"{{api}}"
+							],
+							"path": [
+								"users",
+								""
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "News",
+			"item": [
+				{
+					"name": "Publish News",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{editorToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "title",
+									"value": "{{$randomLoremSentence}}",
+									"type": "text"
+								},
+								{
+									"key": "body",
+									"value": "{{$randomLoremParagraphs}}",
+									"type": "text"
+								},
+								{
+									"key": "image",
+									"value": "{{$randomAbstractImage}}",
+									"type": "text"
+								},
+								{
+									"key": "category",
+									"value": "{{$randomLoremWord}}",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{api}}/news",
+							"host": [
+								"{{api}}"
+							],
+							"path": [
+								"news"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get All News",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{api}}/news/?size=8&userId=7f5cbc6a-7b03-4776-b887-c1a7d28251e0",
+							"host": [
+								"{{api}}"
+							],
+							"path": [
+								"news",
+								""
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "2",
+									"disabled": true
+								},
+								{
+									"key": "size",
+									"value": "8"
+								},
+								{
+									"key": "search",
+									"value": "Eos",
+									"disabled": true
+								},
+								{
+									"key": "userId",
+									"value": "7f5cbc6a-7b03-4776-b887-c1a7d28251e0"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get News by id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{api}}/news/4773e65f-bacf-4618-a0b7-591e4bf337a5",
+							"host": [
+								"{{api}}"
+							],
+							"path": [
+								"news",
+								"4773e65f-bacf-4618-a0b7-591e4bf337a5"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete News",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{editorToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{api}}/news/4773e65f-bacf-4618-a0b7-591e4bf337a5",
+							"host": [
+								"{{api}}"
+							],
+							"path": [
+								"news",
+								"4773e65f-bacf-4618-a0b7-591e4bf337a5"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "api",
+			"value": "http://localhost:5000/api",
+			"type": "string"
+		},
+		{
+			"key": "token",
+			"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6OSwidXVpZCI6IjlhZjI4NzA2LTBiY2QtNGI3NC1hZTA3LWYzYWMxNzU5NDI1OCIsImVtYWlsIjoiV2FsZG9fS29lbHBpbkB5YWhvby5jb20iLCJuYW1lIjoiQmFycnkgQm9naXNpY2giLCJyb2xlIjoiR2VuZXJhbCIsImlhdCI6MTY1NDU5Nzc1MiwiZXhwIjoxNjU1MTE2MTUyfQ.99VEZhkOI4z4kKCDwXCaUqrVfEC5dQfhETdgqeL-pnM"
+		},
+		{
+			"key": "editorToken",
+			"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6OSwidXVpZCI6IjlhZjI4NzA2LTBiY2QtNGI3NC1hZTA3LWYzYWMxNzU5NDI1OCIsImVtYWlsIjoiV2FsZG9fS29lbHBpbkB5YWhvby5jb20iLCJuYW1lIjoiQmFycnkgQm9naXNpY2giLCJyb2xlIjoiRWRpdG9yIiwiaWF0IjoxNjU0NTk4MDcyLCJleHAiOjE2NTUxMTY0NzJ9.__LR15Pps8tZsaLnAxs5Ls5BhHDpB7SwbGDWRMeil2Q",
+			"type": "string"
+		},
+		{
+			"key": "generalToken",
+			"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwidXVpZCI6IjI1MDUzYzg2LThkMGItNGE2MC1hY2FkLWMwZTA3NjgwNDUyZSIsImVtYWlsIjoiUmV5bmFfTGFiYWRpZUBob3RtYWlsLmNvbSIsIm5hbWUiOiJGbG9yZW5jZSBKYWNvYmkiLCJyb2xlIjoiR2VuZXJhbCIsImlhdCI6MTY1NDYwMDExMCwiZXhwIjoxNjU1MTE4NTEwfQ.2fMJIlS0gDKmE0VuXg69FgDG2sEN1hyXmVEQcVDLW5o",
+			"type": "string"
+		}
+	]
+}
