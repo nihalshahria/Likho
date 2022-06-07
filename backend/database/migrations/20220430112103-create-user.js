@@ -27,7 +27,7 @@ module.exports = {
                 defaultValue: "General",
             },
             password: {
-                type: DataTypes.STRING,
+                type: DataTypes.TEXT,
                 allowNull: false,
             },
             image: {
