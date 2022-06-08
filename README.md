@@ -1,8 +1,8 @@
-# Project Title
+# News-CRUD
 
 ## About <a name = "about"></a>
 
-This is a CRUD application for posting and managing blog posts.
+This is a CRUD application for posting and managing news.
 
 ## Getting Started <a name = "getting_started"></a>
 
