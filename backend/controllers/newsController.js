@@ -117,7 +117,7 @@ exports.deleteNews = catchAsync(async (req, res, next) => {
     if (!news) throw new HttpError("News not found", 404);
 
     if (user.role === "Admin" || user.id === news.creatorId) {
-        const result = await news.destroy({ where: { uuid: uuid } });
+        const result = await news.destroy();
 
         res.status(200).json({
             status: "success",
