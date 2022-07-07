@@ -26,7 +26,7 @@ exports.getAllNews = catchAsync(async (req, res, next) => {
         },
         include: {
             association: "user",
-            where: { uuid: userId}
+            // where: { uuid: userId || undefined}
         },
         limit,
         offset,
@@ -63,8 +63,8 @@ exports.publishNews = catchAsync(async (req, res, next) => {
     const { title, body, image, category } = req.body;
     const user = req.userData;
     console.log(user);
-    if (user.role === "General")
-        throw new HttpError("You are not authorized to publish news", 401);
+    // if (user.role === "General")
+    //     throw new HttpError("You are not authorized to publish news", 401);
 
     const news = await News.create({
         title,
