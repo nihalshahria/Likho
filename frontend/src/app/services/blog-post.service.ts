@@ -28,11 +28,12 @@ export class BlogPostService {
     );
   }
 
-  // public CreatePost(post: BlogPost): Observable<any> {
-  //   return this.apiService.Post(environment.api.entries, post);
-  // }
+  public CreatePost(post: BlogPost): Observable<any> {
+    return this.apiService.Post(`/news`, post);
+  }
 
-  // public deletePost(id) {
-  //   return this.apiService.Delete(environment.api.entries + '/' + id);
-  // }
+  public deletePost(id: string) {
+    return this.apiService.Delete(`/news/${id}`);
+    // return this.apiService.Delete(environment.api.entries + '/' + id);
+  }
 }

@@ -5,19 +5,20 @@ import { StorageService } from '../services/storage.service';
 @Component({
   selector: 'app-navbar',
   templateUrl: './navbar.component.html',
-  styleUrls: ['./navbar.component.css']
+  styleUrls: ['./navbar.component.css'],
 })
 export class NavbarComponent implements OnInit {
   user: any = null;
   isLoggedIn: boolean = false;
 
-  constructor(private storageService: StorageService, private authService: AuthService) { }
+  constructor(
+    private storageService: StorageService,
+    private authService: AuthService,
+  ) {}
 
   ngOnInit(): void {
     this.isLoggedIn = this.storageService.isLoggedIn();
-    if(this.isLoggedIn) {
-      this.user = this.storageService.getUser();
-    }
+    this.getUser();
   }
 
   logout(): void {
@@ -26,4 +27,9 @@ export class NavbarComponent implements OnInit {
     window.location.reload();
   }
 
+  getUser() {
+    if (this.isLoggedIn) {
+      this.user = this.storageService.getUser();
+    }
+  }
 }

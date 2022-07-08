@@ -14,6 +14,7 @@ import { JwtInterceptor } from './helpers/jwt.interceptor';
 import { PreviewPostComponent } from './preview-post/preview-post.component';
 import { LoadingComponent } from './loading/loading.component';
 import { ViewPostComponent } from './view-post/view-post.component';
+import { CreatePostComponent } from './create-post/create-post.component';
 
 @NgModule({
   declarations: [
@@ -26,6 +27,7 @@ import { ViewPostComponent } from './view-post/view-post.component';
     PreviewPostComponent,
     LoadingComponent,
     ViewPostComponent,
+    CreatePostComponent,
   ],
   imports: [BrowserModule, AppRoutingModule, FormsModule, HttpClientModule],
   providers: [

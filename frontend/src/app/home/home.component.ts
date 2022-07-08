@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { BlogPost } from '../models/blog-post.model';
 import { BlogPostService } from '../services/blog-post.service';
+import { StorageService } from '../services/storage.service';
 
 @Component({
   selector: 'app-home',
@@ -10,11 +11,17 @@ import { BlogPostService } from '../services/blog-post.service';
 export class HomeComponent implements OnInit {
   loading: boolean = true;
   posts!: BlogPost[];
+  isLoggedIn: boolean = false;
 
-  constructor(private postService: BlogPostService) {}
+  constructor(
+    private postService: BlogPostService,
+    private storageService: StorageService
+  ) {}
 
   ngOnInit(): void {
     this.getPosts();
+    this.isLoggedIn = this.storageService.isLoggedIn();
+    // this.reloadPage();
   }
 
   private getPosts(): void {
@@ -22,5 +29,8 @@ export class HomeComponent implements OnInit {
       this.posts = posts.data.news;
       this.loading = false;
     });
+  }
+  reloadPage(): void {
+    window.location.reload();
   }
 }

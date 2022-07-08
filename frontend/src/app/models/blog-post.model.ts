@@ -4,6 +4,7 @@ export class BlogPost {
   uuid!: string;
   title!: string;
   body!: string;
+  category!: string;
   image!: string;
   user!: User;
   createdAt!: Date;

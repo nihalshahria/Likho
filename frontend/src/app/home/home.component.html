@@ -8,7 +8,7 @@
     </div>
 
     <div class="clearfix">
-      <a class="btn btn-secondary float-left pointer" routerLink="/author-post">
+      <a class="btn btn-secondary float-left pointer" routerLink="../posts/new-post" *ngIf="isLoggedIn">
         New Post
         <i class="fa fa-plus" aria-hidden="true"></i></a>
       <a class="btn btn-secondary float-right pointer" routerLink="/posts">
