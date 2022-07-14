@@ -14,6 +14,14 @@ export class PreviewPostComponent implements OnInit {
   ngOnInit() {}
 
   public go(): void {
-    this.router.navigate(['/posts/' + this.post.uuid]);
+    this.router.navigate(['/posts/' + this.post.uuid]).then(() => {
+      window.location.reload();
+    });
+  }
+
+  goToProfile() {
+    this.router.navigate([`/profile/${this.post.user.uuid}`]).then(() => {
+      window.location.reload();
+    });
   }
 }

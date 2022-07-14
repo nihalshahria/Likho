@@ -10,12 +10,11 @@ import { ApiService } from './api.service';
 export class BlogPostService {
   constructor(private apiService: ApiService) {}
 
-  public GetPosts(): Observable<any> {
-    return this.apiService.Get(`/news`).pipe(
+  public GetPosts(queryParams?: any): Observable<any> {
+    return this.apiService.Get(`/news`, queryParams).pipe(
       map((res) => {
         res.data.news.map((x: any) => new BlogPost(x));
         return res;
-        // return json.map((post) => new BlogPost(post));
       })
     );
   }
@@ -32,8 +31,11 @@ export class BlogPostService {
     return this.apiService.Post(`/news`, post);
   }
 
-  public deletePost(id: string) {
+  public DeletePost(id: string) {
     return this.apiService.Delete(`/news/${id}`);
-    // return this.apiService.Delete(environment.api.entries + '/' + id);
+  }
+
+  public UpdatePost(post: BlogPost): Observable<any> {
+    return this.apiService.Update(`/news/${post.uuid}`, post);
   }
 }

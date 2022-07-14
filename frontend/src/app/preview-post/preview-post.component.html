@@ -6,7 +6,7 @@
     </h3>
   </a>
   <p class=" post-meta">Posted by
-    <a href="#" [textContent]="post.user.name"></a>
+    <a [textContent]="post.user.name" (click)="goToProfile()"></a>
   </p>
 </div>
 <!--- .substring(0, 48) --->

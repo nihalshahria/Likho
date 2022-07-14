@@ -15,6 +15,7 @@ import { PreviewPostComponent } from './preview-post/preview-post.component';
 import { LoadingComponent } from './loading/loading.component';
 import { ViewPostComponent } from './view-post/view-post.component';
 import { CreatePostComponent } from './create-post/create-post.component';
+import { UpdatePostComponent } from './update-post/update-post.component';
 
 @NgModule({
   declarations: [
@@ -28,6 +29,7 @@ import { CreatePostComponent } from './create-post/create-post.component';
     LoadingComponent,
     ViewPostComponent,
     CreatePostComponent,
+    UpdatePostComponent,
   ],
   imports: [BrowserModule, AppRoutingModule, FormsModule, HttpClientModule],
   providers: [

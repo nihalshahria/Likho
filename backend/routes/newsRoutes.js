@@ -14,8 +14,9 @@ router.use(checkAuth); // All routes below this line require authentication
 
 router
     .route("/")
-    .post(newsPublishValidators, publishNews)
-    .put(newsUpdateValidators, updateNews)
+    .post(newsPublishValidators, publishNews);
+    
+router.put("/:uuid", newsUpdateValidators, updateNews)
 
 router.delete("/:uuid", deleteNews);
 

@@ -14,6 +14,7 @@ export class ViewPostComponent implements OnInit {
   loading: boolean = true;
   post!: BlogPost;
   ownPost: boolean = false;
+  updateMode: boolean = false;
 
   constructor(
     private route: ActivatedRoute,
@@ -28,11 +29,14 @@ export class ViewPostComponent implements OnInit {
 
   public deletePost() {
     const id = this.route.snapshot.params['id'];
-    this.postService.deletePost(id).subscribe((res) => {
+    this.postService.DeletePost(id).subscribe((res) => {
       this.router.navigate(['/home']).then(() => {
         window.location.reload();
-      });;
+      });
     });
+  }
+  public updatePost() {
+    this.updateMode = true;
   }
 
   private getPost(): void {
@@ -45,9 +49,21 @@ export class ViewPostComponent implements OnInit {
     });
   }
 
+  public eventHandle(event: any):void {
+    this.updateMode = false;
+    
+    window.location.reload();
+    console.log(this.updateMode);
+  }
+
   private checkAuthor(user: User): void {
-    if(this.storageService.getUser().uuid == user.uuid) {
+    if (this.storageService.getUser().uuid == user.uuid) {
       this.ownPost = true;
-    }  
+    }
+  }
+  goToProfile() {
+    this.router.navigate([`/profile/${this.post.user.uuid}`]).then(() => {
+      window.location.reload();
+    });
   }
 }

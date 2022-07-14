@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { AuthService } from '../services/auth.service';
 import { StorageService } from '../services/storage.service';
 
@@ -12,8 +13,9 @@ export class NavbarComponent implements OnInit {
   isLoggedIn: boolean = false;
 
   constructor(
+    private router: Router,
     private storageService: StorageService,
-    private authService: AuthService,
+    private authService: AuthService
   ) {}
 
   ngOnInit(): void {
@@ -31,5 +33,11 @@ export class NavbarComponent implements OnInit {
     if (this.isLoggedIn) {
       this.user = this.storageService.getUser();
     }
+  }
+
+  goToProfile() {
+    this.router.navigate([`/profile/${this.user.uuid}`]).then(() => {
+      window.location.reload();
+    });
   }
 }

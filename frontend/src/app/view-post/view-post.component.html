@@ -4,7 +4,7 @@
     <span class="sr-only">Loading...</span>
   </div>
 </div>
-<div class="row" *ngIf="!loading">
+<div class="row" *ngIf="!loading && !updateMode">
 
   <div class="col-lg-8 col-md-10 mx-auto">
     <h1 [textContent]="post.title"></h1>
@@ -12,15 +12,24 @@
     <h3 class="post-content" [textContent]="post.body"></h3>
 
     <p style="color: grey; text-align: center;" class="post-meta"><i>Posted by </i>
-      <i><a href="#" style="color: grey; text-decoration: none;" [textContent]="post.user.name"></a></i>
+      <i><a style="color: grey; text-decoration: none;" [textContent]="post.user.name" (click)="goToProfile()"></a></i>
     </p>
   </div>
   <!-- Pager -->
 </div>
 
+<app-update-post *ngIf="updateMode" [post]="post" (updated)="eventHandle($event)"></app-update-post>
+
+<!-- Update Button -->
+<div class="clearfix text-center mx-auto" *ngIf="ownPost">
+  <a (click)="updatePost();" class="btn btn-light pointer text-success">
+    Update Post
+    <i class="" aria-hidden="true"></i></a>
+</div>
+
 <!-- Delete Button -->
 <div class="clearfix text-center mx-auto" *ngIf="ownPost">
-  <a (click)="deletePost();" class="btn btn-light pointer">
+  <a (click)="deletePost();" class="btn btn-light pointer text-danger">
     Delete Post
     <i class="" aria-hidden="true"></i></a>
 </div>

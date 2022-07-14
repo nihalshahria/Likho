@@ -11,6 +11,12 @@ exports.getAllNews = catchAsync(async (req, res, next) => {
 
     let { search, page, size, userId } = req.query;
     search = search || "";
+    // userId = userId || "";
+    let whereInclude = {};
+    if (userId) {
+        whereInclude = { uuid: userId }
+    }
+    console.log(whereInclude);
 
     const { limit, offset } = getPagination(page, size);
     const data = await News.findAndCountAll({
@@ -22,11 +28,14 @@ exports.getAllNews = catchAsync(async (req, res, next) => {
                         { body: { [Op.iLike]: `%${search}%` } },
                     ],
                 },
+                // {
+                //      creatorId: {[Op.iLike]: `%${userId}%`} 
+                // }
             ],
         },
         include: {
             association: "user",
-            // where: { uuid: userId || undefined}
+            where: whereInclude
         },
         limit,
         offset,

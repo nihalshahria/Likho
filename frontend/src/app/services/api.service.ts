@@ -1,4 +1,4 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { catchError, map, Observable, throwError } from 'rxjs';
 import { environment } from 'src/environments/environment';
@@ -15,9 +15,19 @@ const httpOptions = {
 export class ApiService {
   constructor(private http: HttpClient) {}
 
-  public Get(endpoint: string): Observable<any> {
+  public Get(endpoint: string, queryParams?: any): Observable<any> {
+    let params = new HttpParams();
+    if (queryParams) {
+      console.log(queryParams);
+
+      for (const key in queryParams) {
+        params = params.set(key.toString(), queryParams[key].toString());
+        console.log(params.toString());
+      }
+    }
+
     return this.http
-      .get(API_URL + endpoint, {
+      .get(API_URL + endpoint + '?' + params.toString(), {
         responseType: 'json',
       })
       .pipe(catchError(this.handleError));
@@ -26,6 +36,12 @@ export class ApiService {
   public Post(endpoint: string, data: any): Observable<any> {
     return this.http
       .post(API_URL + endpoint, data, httpOptions)
+      .pipe(catchError(this.handleError));
+  }
+
+  public Update(endpoint: string, data: any): Observable<any> {
+    return this.http
+      .put(API_URL + endpoint, data, httpOptions)
       .pipe(catchError(this.handleError));
   }
 
