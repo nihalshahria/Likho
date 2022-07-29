@@ -17,13 +17,14 @@ const app = express();
 const port = process.env.PORT || 5000;
 const server = http.createServer(app);
 
+// app.use(
+//   cors({
+//     credentials: true,
+//     origin: ["http://localhost:4200"],
+//   })
+// );
+app.use(cors());
 app.use(morgan("dev"));
-app.use(
-  cors({
-    credentials: true,
-    origin: ["http://localhost:4200"],
-  })
-);
 
 app.use(express.json());
 
