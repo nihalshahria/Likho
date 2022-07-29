@@ -17,6 +17,7 @@ const app = express();
 const port = process.env.PORT || 5000;
 const server = http.createServer(app);
 
+app.use(morgan("dev"));
 app.use(
   cors({
     credentials: true,
@@ -29,7 +30,6 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // Logger middleware
-app.use(morgan("dev"));
 
 // Process Form-Data
 app.use(multer().array());
