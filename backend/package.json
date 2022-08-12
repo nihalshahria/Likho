@@ -5,7 +5,8 @@
     "main": "server.js",
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1",
-        "create-db": "sequelize-cli db:create && sequelize-cli db:migrate && sequelize-cli db:seed:all",
+        "create-db-with-seed": "sequelize-cli db:create && sequelize-cli db:migrate && sequelize-cli db:seed:all",
+        "create-db": "sequelize-cli db:create && sequelize-cli db:migrate",
         "drop-db": "sequelize-cli db:drop",
         "start": "nodemon server"
     },

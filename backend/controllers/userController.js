@@ -101,7 +101,7 @@ exports.updateUser = catchAsync(async (req, res, next) => {
 
     const { name, oldPassword, newPassword } = req.body;
 
-    const user = await User.findByPk(id);
+    let user = await User.findByPk(id);
 
     if (newPassword) {
         const isValidPassword = await bcrypt.compare(
@@ -122,9 +122,8 @@ exports.updateUser = catchAsync(async (req, res, next) => {
         name: name || undefined,
         password: user.password,
     };
-
+    user.name = name || user.name;
     const result = await User.update(changes, { where: { id } });
-
     res.status(200).json({
         status: "success",
         data: {

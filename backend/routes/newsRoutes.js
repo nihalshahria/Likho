@@ -8,7 +8,7 @@ const { newsPublishValidators, newsUpdateValidators } = require("../middleware/n
 const router = Router();
 
 router.get("/", cache(10), getAllNews);
-router.get("/:uuid", cache(10), getNews);
+router.get("/:uuid", getNews);
 
 router.use(checkAuth); // All routes below this line require authentication
 

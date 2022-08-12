@@ -14,7 +14,7 @@ exports.getAllNews = catchAsync(async (req, res, next) => {
     // userId = userId || "";
     let whereInclude = {};
     if (userId) {
-        whereInclude = { uuid: userId }
+        whereInclude = { uuid: userId };
     }
     console.log(whereInclude);
 
@@ -28,15 +28,13 @@ exports.getAllNews = catchAsync(async (req, res, next) => {
                         { body: { [Op.iLike]: `%${search}%` } },
                     ],
                 },
-                // {
-                //      creatorId: {[Op.iLike]: `%${userId}%`} 
-                // }
             ],
         },
         include: {
             association: "user",
-            where: whereInclude
+            where: whereInclude,
         },
+        order: [["createdAt", "DESC"]],
         limit,
         offset,
     });
@@ -54,14 +52,14 @@ exports.getAllNews = catchAsync(async (req, res, next) => {
 
 exports.getNews = catchAsync(async (req, res, next) => {
     const uuid = req.params.uuid;
-
+    console.log(uuid);
     const news = await News.findOne({
         where: { uuid: uuid },
-        include: {association: "user",},
+        include: { association: "user" },
     });
-
+    console.log(news);
     res.status(200).json({
-        status: "success",
+        status: news ? "success" : "fail",
         data: news,
     });
 });
@@ -71,7 +69,7 @@ exports.publishNews = catchAsync(async (req, res, next) => {
 
     const { title, body, image, category } = req.body;
     const user = req.userData;
-    console.log(user);
+    // console.log(user);
     // if (user.role === "General")
     //     throw new HttpError("You are not authorized to publish news", 401);
 
